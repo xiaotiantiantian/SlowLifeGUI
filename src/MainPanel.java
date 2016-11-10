@@ -31,18 +31,21 @@ public class MainPanel extends JPanel {
 	return _cells;
     }
 
+    //one change to improve the performance
+    //this function has only return the input without any change
     private int convertToInt(int x) {
-	int c = 0;
-	String padding = "0";
-	while (c < _r) {
-	    String l = new String("0");
-	    padding += l;
-	    c++;
-	}
-	
-	String n = padding + String.valueOf(x);
-	int q = Integer.parseInt(n);
-	return q;
+//	int c = 0;
+//	String padding = "0";
+//	while (c < _r) {
+//	    String l = new String("0");
+//	    padding += l;
+//	    c++;
+//	}
+//	
+//	String n = padding + String.valueOf(x);
+//	int q = Integer.parseInt(n);
+//	return q;
+        return x;
     }
     
     private int getNumNeighbors(int x, int y) {
@@ -219,19 +222,21 @@ public class MainPanel extends JPanel {
      * Run the system continuously.
      */
 
+    //One change to improve the performance
+    //the commented code has no change to other varables or change the outside variables
     public void runContinuous() {
 	_running = true;
 	while (_running) {
 	    System.out.println("Running...");
-	    int origR = _r;
-	    try {
-		Thread.sleep(20);
-	    } catch (InterruptedException iex) { }
-	    for (int j=0; j < _maxCount; j++) {
-	    	_r += (j % _size) % _maxCount;
-		_r += _maxCount;
-	    }
-	    _r = origR;
+//	    int origR = _r;
+//	    try {
+//		Thread.sleep(20);
+//	    } catch (InterruptedException iex) { }
+//	    for (int j=0; j < _maxCount; j++) {
+//	    	_r += (j % _size) % _maxCount;
+//		_r += _maxCount;
+//	    }
+//	    _r = origR;
 	    backup();
 	    calculateNextIteration();
 	}
