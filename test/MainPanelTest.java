@@ -17,6 +17,7 @@ import static org.junit.Assert.*;
  * @author Zhirun Tian
  */
 public class MainPanelTest {
+    MainPanel mainpanel;
     
     public MainPanelTest() {
     }
@@ -31,6 +32,7 @@ public class MainPanelTest {
     
     @Before
     public void setUp() {
+        mainpanel   = new MainPanel(20); 
     }
     
     @After

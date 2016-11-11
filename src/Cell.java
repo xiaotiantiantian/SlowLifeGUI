@@ -38,6 +38,7 @@ public class Cell extends JButton {
 	return (text.equals("X"));
     }
 
+    //change this function to optimize the performance
     public String toString() {
 //	String toReturn = new String("");
 //	String currentState = getText();
