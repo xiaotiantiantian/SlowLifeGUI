@@ -4,6 +4,9 @@
  * and open the template in the editor.
  */
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -17,193 +20,102 @@ import static org.junit.Assert.*;
  * @author Zhirun Tian
  */
 public class MainPanelTest {
+
     MainPanel mainpanel;
-    
+
     public MainPanelTest() {
     }
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
+
     @Before
     public void setUp() {
-        mainpanel   = new MainPanel(20); 
+        mainpanel = new MainPanel(20);
     }
-    
+
     @After
     public void tearDown() {
     }
 
+    //firstly test the convertToInt method
     /**
-     * Test of getCellsSize method, of class MainPanel.
+     * Test of ConvertToInt method, of class MainPanel. If the input is a zero,
+     * the return is also a zero
      */
     @Test
-    public void testGetCellsSize() {
-        System.out.println("getCellsSize");
-        MainPanel instance = null;
-        int expResult = 0;
-        int result = instance.getCellsSize();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testConvertToIntZero() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        System.out.println("ConvertToIntZero");
+        Method method;
+        try {
+            Class[] argTypes = new Class[]{int.class};
+            method = MainPanel.class.getDeclaredMethod("convertToInt", argTypes);
+            method.setAccessible(true);
+            Object returnValue = method.invoke(mainpanel, 0);
+            int result = ((Integer) returnValue).intValue();
+            assertEquals(0, result);
+
+        } catch (NoSuchMethodException e) {
+            fail(e.getMessage());
+        }
+
     }
 
     /**
-     * Test of setCells method, of class MainPanel.
+     * Test of ConvertToInt method, of class MainPanel. If the input is a
+     * positive 1, the return is also a positive 1
      */
     @Test
-    public void testSetCells() {
-        System.out.println("setCells");
-        Cell[][] cells = null;
-        MainPanel instance = null;
-        instance.setCells(cells);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testConvertToIntPositive() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        System.out.println("ConvertToIntPositiveOne");
+        Method method;
+        try {
+            Class[] argTypes = new Class[]{int.class};
+            method = MainPanel.class.getDeclaredMethod("convertToInt", argTypes);
+            method.setAccessible(true);
+            Object returnValue = method.invoke(mainpanel, 1);
+            int result = ((Integer) returnValue).intValue();
+            assertEquals(1, result);
+
+        } catch (NoSuchMethodException e) {
+            fail(e.getMessage());
+        }
+
     }
 
     /**
-     * Test of getCells method, of class MainPanel.
+     * Test of ConvertToInt method, of class MainPanel. If the input is a
+     * negative one, the return is also a negative one.
      */
     @Test
-    public void testGetCells() {
-        System.out.println("getCells");
-        MainPanel instance = null;
-        Cell[][] expResult = null;
-        Cell[][] result = instance.getCells();
-        assertArrayEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testConvertToIntNegative() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        System.out.println("ConvertToIntNegative");
+        Method method;
+        try {
+            Class[] argTypes = new Class[]{int.class};
+            method = MainPanel.class.getDeclaredMethod("convertToInt", argTypes);
+            method.setAccessible(true);
+            Object returnValue = method.invoke(mainpanel, -1);
+            int result = ((Integer) returnValue).intValue();
+            assertEquals(-1, result);
+
+        } catch (NoSuchMethodException e) {
+            fail(e.getMessage());
+        }
+
     }
 
+    //then test the backup method
     /**
-     * Test of backup method, of class MainPanel.
+     * Testing that backup still works correctly when the _backupCells array is
+     * initially empty
      */
     @Test
-    public void testBackup() {
-        System.out.println("backup");
-        MainPanel instance = null;
-        instance.backup();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void backupEmptyTest() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+        Field BackupCell = mainpanel.getClass().getDeclaredField("_backupCells");
+        BackupCell.setAccessible(true);
+        boolean[][] before = (boolean[][]) BackupCell.get(mainpanel);
+        mainpanel.backup();
+        boolean[][] after = (boolean[][]) BackupCell.get(mainpanel);
+        assertNotEquals(before, after);
+
     }
 
-    /**
-     * Test of debugPrint method, of class MainPanel.
-     */
-    @Test
-    public void testDebugPrint() {
-        System.out.println("debugPrint");
-        MainPanel instance = null;
-        instance.debugPrint();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of toString method, of class MainPanel.
-     */
-    @Test
-    public void testToString() {
-        System.out.println("toString");
-        MainPanel instance = null;
-        String expResult = "";
-        String result = instance.toString();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of run method, of class MainPanel.
-     */
-    @Test
-    public void testRun() {
-        System.out.println("run");
-        MainPanel instance = null;
-        instance.run();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of runContinuous method, of class MainPanel.
-     */
-    @Test
-    public void testRunContinuous() {
-        System.out.println("runContinuous");
-        MainPanel instance = null;
-        instance.runContinuous();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of stop method, of class MainPanel.
-     */
-    @Test
-    public void testStop() {
-        System.out.println("stop");
-        MainPanel instance = null;
-        instance.stop();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of convertToBoolean method, of class MainPanel.
-     */
-    @Test
-    public void testConvertToBoolean() {
-        System.out.println("convertToBoolean");
-        Cell[][] cells = null;
-        MainPanel instance = null;
-        boolean[][] expResult = null;
-        boolean[][] result = instance.convertToBoolean(cells);
-        assertArrayEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of undo method, of class MainPanel.
-     */
-    @Test
-    public void testUndo() {
-        System.out.println("undo");
-        MainPanel instance = null;
-        instance.undo();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of clear method, of class MainPanel.
-     */
-    @Test
-    public void testClear() {
-        System.out.println("clear");
-        MainPanel instance = null;
-        instance.clear();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of load method, of class MainPanel.
-     */
-    @Test
-    public void testLoad() {
-        System.out.println("load");
-        ArrayList<String> lines = null;
-        MainPanel instance = null;
-        instance.load(lines);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-    
 }
