@@ -51,7 +51,6 @@ public class MainPanelTest {
             Object returnValue = method.invoke(mainpanel, 0);
             int result = ((Integer) returnValue).intValue();
             assertEquals(0, result);
-
         } catch (NoSuchMethodException e) {
             fail(e.getMessage());
         }
@@ -73,7 +72,6 @@ public class MainPanelTest {
             Object returnValue = method.invoke(mainpanel, 1);
             int result = ((Integer) returnValue).intValue();
             assertEquals(1, result);
-
         } catch (NoSuchMethodException e) {
             fail(e.getMessage());
         }
@@ -104,11 +102,13 @@ public class MainPanelTest {
 
     //then test the backup method
     /**
-     * Testing that backup still works correctly when the _backupCells array is
-     * initially empty
+     * Testing that backup works when the _backupCells array is just constructed
+     * and has nothing inside.
      */
     @Test
-    public void backupEmptyTest() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+    public void backupBeforeAfterTest() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+        System.out.println("backupBeforeAfter");
+
         Field BackupCell = mainpanel.getClass().getDeclaredField("_backupCells");
         BackupCell.setAccessible(true);
         boolean[][] before = (boolean[][]) BackupCell.get(mainpanel);
@@ -118,4 +118,63 @@ public class MainPanelTest {
 
     }
 
-}
+    /* Testing that backup matches the value of cells
+		 * for a small board and backup
+     */
+    @Test
+    public void backupNewNotEmptyTest() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+        System.out.println("backupNewNotEmpty");
+
+//        try {
+        Field BackupCell = mainpanel.getClass().getDeclaredField("_cells");
+        BackupCell.setAccessible(true);
+        Cell[][] current_cells = (Cell[][]) BackupCell.get(mainpanel);
+        mainpanel.backup();
+
+        Field BackupCell2 = mainpanel.getClass().getDeclaredField("_cells");
+        BackupCell2.setAccessible(true);
+        Cell[][] current_backup = (Cell[][]) BackupCell2.get(mainpanel);
+
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (current_cells[i][j].getAlive() != current_backup[i][j].getAlive()) {
+                    fail("backup didn't match");
+                }
+            }
+        }
+//        } catch (Exception e) {
+//            fail(e.toString());
+//        }
+    }
+
+//    
+//
+//    /**
+//     * Testing that backup works when it use cell as a unit or boolean as a unit
+//     */
+//    @Test
+//    public void backupCellvsBoolean() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+//        Field _cell = mainpanel.getClass().getDeclaredField("_cells");
+//        _cell.setAccessible(true);
+//        Cell[][] before = (Cell[][]) _cell.get(mainpanel);
+//        Cell[][] _backupCells;
+//        int _size = 15;
+//        _backupCells = new Cell[_size][_size];
+//        for (int j = 0; j < _size; j++) {
+//            for (int k = 0; k < _size; k++) {
+//                _backupCells[j][k] = new Cell();
+//                _backupCells[j][k].setAlive(before[j][k].getAlive());
+//            }
+//        }
+//
+//        mainpanel.backup();
+//
+//        Field BackupCell = mainpanel.getClass().getDeclaredField("_backupCells");
+//        BackupCell.setAccessible(true);
+//        boolean[][] after = (boolean[][]) BackupCell.get(mainpanel);
+//        
+//        
+//
+//    }
+//
+//}
