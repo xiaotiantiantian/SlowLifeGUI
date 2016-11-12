@@ -158,7 +158,6 @@ public class MainPanelTest {
         Field sizeField = mainpanel.getClass().getDeclaredField("_size");
         sizeField.setAccessible(true);
         int size = (int) sizeField.get(mainpanel);
-        
         MainPanel testPanel = new MainPanel(size);
         MainPanel testPanel2 = new MainPanel(size);
         Cell[][] cells = new Cell[size][size];
@@ -172,7 +171,7 @@ public class MainPanelTest {
             }
         }
         testPanel.setCells(cells);
-                testPanel.run();
+        testPanel.run();
         testPanel.undo();
         testPanel2.setCells(cells2);
         testPanel2.run();

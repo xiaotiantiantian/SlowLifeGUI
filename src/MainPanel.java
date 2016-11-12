@@ -298,8 +298,8 @@ public class MainPanel extends JPanel {
      * _backupCells.
      */
     public void undo() {
-//        displayIteration(convertToBoolean(_backupCells));
-        displayIteration(_backupCells);
+        displayIteration(convertToBoolean(_backupCells));
+//        displayIteration(_backupCells);
     }
 
     /**
