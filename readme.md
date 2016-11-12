@@ -5,6 +5,7 @@ Here is the issues I found and modifed by using VisualVM snapshots.
 
 Firstly, I open the SlowLifeGUI and attach the VisualVM to its process. Then look at GameOfLife Tab-> Profiler Tab-> CPU, I could find the most time slices cost functions. https://github.com/xiaotiantiantian/SlowLifeGUI/blob/master/ScreenShots/PerformanceBeforeChange.png
 After have a simple look, I took a snapshot of the progarm, which could help find the relationship between each time costed function. https://github.com/xiaotiantiantian/SlowLifeGUI/blob/master/ScreenShots/PerformanceBeforeChange3.png
+
 Then I found the MainPanel.runContinuous ihave a huge time from two parts: one is its self time and another is that it called the MainPanel.calculateNextIteration, calculateNextIteration called MainPanel.iterateCell, and iterateCell called getNumNeighbors, getNumNeighbors called MainPanel.convertToInt. 
 
 So it means the MainPanel.runContinuous and MainPanel.convertToInt has some problem inside.
@@ -13,6 +14,7 @@ Then I found another huge time slice is Cell.\<init\>, which was called by MainP
 
 After a look of the source code, I found the Cell.toString also have a useless loop.
 
+Here is how I modified the functions below.
 ###1.1 Cell.toString
 It just build a long string with all "X" or all "." and return the first char of the string, then I modifed it to just return the "X" or "."
 ###1.2 Cell.\<init\>
@@ -33,6 +35,36 @@ The function has some sentence has no effect to the outside of the function, fro
 #### https://github.com/xiaotiantiantian/SlowLifeGUI/blob/master/ScreenShots/PerformanceAfterChange3.png
 
 ##3 Manual test of runContinuous
+Because I think the runContinuous function could be difficultly tested by using pinging test method for it has no input and output parameters, so I design some environment as manual tests.
+
+###Test the runContinuous with the smallest size panel
+####Precondition:
+run the program with a parameter of mainpanel size 1, and make the only cell be alive.
+####Executive steps:
+a) Click the row1 and column1 to make it dead
+b) Click "run" button to make it alive
+b) Click "runContinous" button
+####Postcondition:
+the gird/only cell is green and keep green, with the output of "Runing, Calculating, Displaying" in the terminal.
+
+###Test the runContinuous with All the cells alive in a huge size panel
+####Precondition:
+run the program with a parameter of mainpanel size 25, and make all the cell be alive.
+####Executive steps:
+a) Click all of the cells to make it dead
+b) Click "run" button, then all the cells be alive
+c) Click "runContinuous" button
+####Postcondition:
+the cells become green from read and keep green, with the output of "Runing, Calculating, Displaying" in the terminal.
+
+###Test the runContinuous with All the cells dead
+####Precondition:
+run the program with a parameter of mainpanel size 8, and make all the cell be dead.
+####Executive steps:
+a) Click all of the cells to make it dead
+b) Click "runContinous" button
+####Postcondition:
+the cells become green from red and keep green, with the output of "Runing, Calculating, Displaying" in the terminal.
 
 ##4 Pining Tests
 
